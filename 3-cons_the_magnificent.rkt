@@ -253,5 +253,52 @@
 	  (else
 	    (cons (car lat) (subst2 new o1 o2 (cdr lat)))))))))
 ;; I got this wrong a bit for not paying attention but my methodology was right however.
-;; We can replace the two eq with or which is more elegant i think.
+;; We can replace the two eq with or which is more elegant.
 ((or (eq (car lat) o1) (eq (car lat) o2)) (cons new (cdr lat)))
+;;
+;; Write the function multirember which gives its final value with all occurences of a removed.
+;; My reasoning was that if car lat is equal to a then we should recur with cdr lat to check if the
+;; lat has more occurences of a i.e we should not save the value. If car lat is not equal to a
+;; then we should save this atom as the new lat we are building should contain all atoms not equal to a
+(define multirember
+  (lambda (a lat)
+    (cond
+      ((null? lat) (quote()))
+      (else
+	(cond
+	  ((eq? a (car lat))(multirember a (cdr lat))) ;; i.e drop the car by recurring with cdr
+	  (else
+	    (cons (car lat) (multirember a (cdr lat))))))))) ;; i.e save the value to cons later with the value of recurring with fxn
+;; Yess. I was right! I'm so proud of the progress.
+;; For example if we have a as cup and lat as (coffee cup tea cup and hick cup) we want
+;; (coffee tea and hick) Let me test to see whether the function works:
+;; We ask the first question is the lat null? This is the first commandment and we should ask this always
+;; No. So go to the next line and ask the next question. else? Yes else is a question that is always true.
+;; We ask if coffee is equal to cup; and the answer is no. So, we move to the next line and ask the next
+;; question. else? Of course. We cons [[coffee]] to the result of the natural recursion(third commandment) i.e
+;; we recur  with cdr lat which is (cup tea cup and hick cup)
+;; Is lat null? No.
+;; Next. else? Yes. is cup equal to cup? Yes. We recur with (tea cup and hick cup) hence dropping
+;; cup. 
+;; Ask first question. Is lat null? NO.
+;; Next. else? Yes. is tea equal to cup? No. Move to the next line and ask the next question
+;; else? Yes. else is always true. cons [[tea]] to the result of the natural recursion: (multirember a (cdr lat))
+;; So we recur with (cup and hick cup) 
+;; Is lat null? No. Ask the next question.
+;; else? Yes
+;; is cup equal to cup? Yes. We recur with cdr lat hence dropping cup. Our new argument for lat is
+;; (and hick cup)
+;; Is lat null? No. Next question. else? Yes. Is and equal to cup? No. We move to the next line and ask the next
+;; question. else? Yes. We cons [[and]] to the result of (multirember a (cdr lat)) 
+;; Ask first question: is lat null? No. We move to the next line and ask the next question. 
+;; else? Yes. Is hick equal to cup? No. We move to the next line and ask the next question.
+;; We cons [[hick]] to the result of the recursion with cdr lat.
+;; Ask the first question: is lat null? No. It is not empty.
+;; Is cup equal to cup? Yes. So we recur with cdr lat which is now ().
+;; First question: is lat null? YES. So the value of the application is ()
+;; But we are not done yet. We have to cons () with the values we saved.
+;; () is the result of the recursion where we wanted to cons hick. So afterwards we have
+;; (hick). We cons hick to and to get (and hick). We then cons tea to (and hick) to have
+;; (tea and hick) and then finally we cons coffee to (tea and hick) to get (coffee tea and hick) which is the
+;; solution to our original problem.
+;; We will cons other parts of chapter 3 with this part tomorrow!í¸…
