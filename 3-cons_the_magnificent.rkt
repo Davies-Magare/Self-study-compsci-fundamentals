@@ -149,3 +149,109 @@
 ;; ((sugar)(butter)(water salt)). We wanted to cons sugar to this value. Therefore our final solution
 ;; will be (sugar butter water).
 ;; We are done now.
+
+;; December 26th 5:20 a.m
+;; The function insertR takes three arguments lat old and new. It builds
+;; a new list with new inserted to the right of old.
+;; If we had lat as (cow goat dog) and our old as goat and new as cat
+
+(define lat'(cow goat dog))
+(define old 'goat)
+(define new 'cat)
+(insertR lat old new)
+;;=> '(cow goat cat dog)
+
+;; The function insert r examines each s expression in lat
+;; one at a time and compares them to old. If they are not the same
+;; we save car lat to cons to the new list later and then keep checking
+;; the rest of lat by recurring to the function with the cdr or lat
+;; if we find an s expression that matches old we cons the cdr of lat with new
+;; then cons the resulting expression to old such that we have old new cdr lat
+;; then cons this value in order with the values that we had saved.
+
+(define insertR
+  (lambda (new old lat)
+    (cond
+      ((null? lat)(quote()))
+      (else
+	((eq? old (car lat)) (cons old (cons new (cdr lat))))
+	(else
+	  (cons (car lat) (insertR new old (cdr lat))))))))
+
+;; example What is the value of the application (insertR new old lat)
+;; where new is topping old is fudge and lat is (ice cream with fudge for dessert)
+;; We ask the first question is lat null? No. So we move to the next question. else
+;; Yes of course else is always true. Is ice equal to fudge? No. Ask the next question.
+;; else? Yes of course: else is always true. We cons [[ice]] with (insertR new old (cdr lat))
+;; Since we do not know this value we have to find out. Ask the first question: is lat null? No.
+;; Ask the next question. else? Yes. is cream equal to fudge? No. So we ask the next question
+;; else? Yes, of course. We cons [[cream]] to the value of (insertR new old (cdr lat)). Since we do not know
+;; this value we have to find out by recurring to the function. We check again if lat is null? No. else? Yes.
+;; Is with equal to fudge? No. else? Yes. cons [[with]] to the value of (insertR new old (cdr lat)). Recur.
+;; Is lat null? No. Ask the next question. Is fudge equal to fudge? YES. So, the value of this application
+;; is the result of (cons old (cons new (cdr lat))) which means we first cons new to (for dessert) to get
+;; (topping for dessert) then cons old to get (fudge topping for dessert). We are not done yet. (fudge topping for dessert)
+;; is the answer to (insertR new old (cdr lat)) where we wanted to cons with with. The value of this application then becomes
+;; (with fudge topping for dessert). But what is (with fudge topping for dessert)? It is our answer to our recur to insertR which we
+;; wanted to cons to "cream". So the value of this application becomes (cream with fudge topping for dessert). Are we done yet? No. 
+;; (cream with fudge topping for dessert) is our answer to our recur to insertR which we wanted to cons with ice. After we cons
+;; The result becomes (ice cream with fudge topping for dessert). This indeed is the answer to our problem (insertR new old lat) where
+;; new was topping old was fudge and lat was (ice cream with fudge for dessert).
+;;
+;; insertL inserts new to the left of the first occurence of the atom old.
+;; I guess this could be something like:
+(define insertL
+  (lambda new old lat
+    (cond
+      ((null? lat)(quote()))
+      (else (cond
+      (eq? old (car lat)) (cons new lat)
+      (else 
+	(cons (car lat)(insertL new old (cdr lat)))))))))
+
+;; Yess I got it right. Instead of cons(new(cons(old (cdr lat)))) I used lat because it is the
+;; cons of old and cdr lat; and all we have to do is cons new onto it.
+;;
+;; NOw let's try subst. subst replaces the first occurence of old in
+;; lat with new. for example if new is topping and old is fudge
+;; lat is (ice cream with fudge for dessert) the value is
+;; (ice cream with topping for dessert)
+;; I think that is not hard since all we have to do is drop the old and replace it with the new.
+;; We will check if the car of lat is equal to old. If it is we just cons new to the cdr of lat then
+;; cons the previous s expressions if any.
+(define subst
+  (lambda (new old lat)
+    (cond
+      ((null? lat)(quote())) ;;first commandment
+	(else
+	  (cond
+	  (eq? (car lat) old) (cons new (cdr lat))
+	  (else
+	    (cons (car lat) (subst(new old (cdr lat))))))))))
+
+;; Correct!!
+;;
+;; Lets try subst2. (subst2 new o1 o2 lat) subst2 replaces either the
+;; first occurence of o1 or of o2 with new.
+;; For example where
+;; new is vanilla
+;; o1 is chocolate
+;; o2 is banana
+;; and lat is (banana ice cream with chocolate topping)
+;; the value is (vanilla ice cream with chocolate topping)
+;; What i can think of is we should compare car lat with both o1 and o2
+;; in separate questions. If either question evaluates to true then we cons new its cdr
+;; and this value is the value of the application and we cons that value with the atoms we had saved if any.
+;; if we get to an empty list just con the empty list to the saved atoms in order.
+(define subst2
+  (lambda(new o1 o2 lat)
+    (cond ;; first question
+      ((null? lat)(quote()))
+      (else ;; if the prev question is not true
+	(cond ((eq (car lat) o1) (cons new (cdr lat)))
+	  ((eq (car lat) o2) (cons new (cdr lat)))
+	  (else
+	    (cons (car lat) (subst2 new o1 o2 (cdr lat)))))))))
+;; I got this wrong a bit for not paying attention but my methodology was right however.
+;; We can replace the two eq with or which is more elegant i think.
+((or (eq (car lat) o1) (eq (car lat) o2)) (cons new (cdr lat)))
