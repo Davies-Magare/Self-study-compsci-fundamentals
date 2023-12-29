@@ -125,6 +125,9 @@
 ;;My answer was right!!
 ;;I'm still wondering what we'll do if the first element is not a list
 ;;For example what is (firsts l) where l is (dog (meows cat))??
+;;#Update: I've found out that since this function takes a lat as the argument
+;; then we are sure that the list consists of only atoms considering the question
+;; lat?
 ;;=============================================================
 ;; The third commandment: When building a list cons the first
 ;; element to the natural recursion.
