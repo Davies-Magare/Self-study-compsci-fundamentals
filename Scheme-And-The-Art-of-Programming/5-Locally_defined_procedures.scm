@@ -136,5 +136,3 @@
       (fib-it-helper n 1 1))))
 ;; I think that should work. We create a local procedure to handle the recursion then
 ;; make the value of fib it a procedure that applies the fib-it-helper procedure on n.
-;; I don't know if I'm saying the right thing.
-;; Confirmed it works. I have to find out what is going on though.
