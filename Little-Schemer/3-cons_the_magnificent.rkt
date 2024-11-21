@@ -304,4 +304,107 @@
 ;; (hick). We cons hick to and to get (and hick). We then cons tea to (and hick) to have
 ;; (tea and hick) and then finally we cons coffee to (tea and hick) to get (coffee tea and hick) which is the
 ;; solution to our original problem.
-;; We will cons other parts of chapter 3 with this part tomorrow!í¸…
+;; We will cons other parts of chapter 3 with this part tomorrow.
+
+
+
+
+
+;; UPDATE THURSDAY NOVEMBER 21 2024
+
+;; First version of multiinsertL
+;; Inserts new to the rigth of every
+;; occurence of old in a list of atoms
+;; lat, recursively
+;; version 1: Has a bug
+;; old is to be replaced with (car lat)
+;; in the correct version
+
+(define multiinsertL
+    (lambda (new old lat)
+      (cond
+        ((null? lat) '())
+        (else
+          (cond
+            ((eq? (car lat) old)
+             (cons new (cons old
+                         (multiinsertL new old (cdr lat)))))
+            (else
+              (cons old (multiinsertL new old (cdr lat)))))))))
+;; > (multiinsertL 'fried 'fish '(chips and fish or fish and fried))
+;;  (fish fish fried fish fish fried fish fish fish)
+  
+;; multirember corrected version:
+(define multiinsertL
+    (lambda (new old lat)
+      (cond
+        ((null? lat) '())
+        (else
+          (cond
+            ((eq? (car lat) old)
+             (cons new (cons old
+                         (multiinsertL new old (cdr lat)))))
+            (else
+              (cons (car lat) (multiinsertL new old (cdr lat)))))))))
+;; > (multiinsertL 'fried 'fish '(chips and fish or fish and fried))
+;;   (chips and fried fish or fried fish and fried)
+;; this version works properly
+
+;; Multisubst: Susbstitutes each occurence of old
+;; in a list with new
+
+(define multisubst
+    (lambda (new old lat)
+      (cond
+        ((null? lat) '())
+        (else
+          (cond
+            ((eq? (car lat) old)
+             (cons new (multisubst new old (cdr lat))))
+            (else
+              (cons (car lat) (multisubst new old (cdr lat)))))))))
+
+;;Usage Example
+;; (multisubst 'cat 'dogs '(meows and dogs always dogs and meows))
+;;  (meows and cat always cat and meows)
+
+
+
+;; MultiinsertR recursively inserts new to the right
+;; of each occurence of old in the list 
+;; lat 
+
+(define multiinsertR
+    (lambda (new old lat)
+      (cond
+        ((null? lat) '())
+        (else
+          (cond
+            ((eq? (car lat) old)
+             (cons old (cons new
+                         (multiinsertR new old (cdr lat)))))
+            (else
+              (cons (car lat) (multiinsertR new old (cdr lat)))))))))
+;;Usage example
+;; > (multiinsertR 'cat 'dog '(my dog and my other dog love dogs very much))
+;;     (my dog cat and my other dog cat love dogs very much)
+
+;; > (multiinsertR 'cat 'dog '())
+      ()
+
+;; Multirember recursively removes every occurence of a
+;; from the list of atoms lat
+
+(define multirember
+    (lambda (a lat)
+      (cond
+        ((null? lat) '())
+        (else
+          (cond
+            ((eq? (car lat) a)
+             (multirember a (cdr lat)))
+            (else
+              (cons (car lat) (multirember a (cdr lat)))))))))
+;; Usage example
+;; > (multirember 'one '(one two one three one four one))
+      (two three four)
