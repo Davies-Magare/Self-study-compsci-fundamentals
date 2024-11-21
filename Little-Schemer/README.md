@@ -1,10 +1,10 @@
-Exercises from the Little-Schemer book by Daniel P. Friedman and Matthias Felleisen.
-The first few files are very wordy, a result of an attempt to understand the recursion
-process.
+# **Exercises from The Little Schemer**
 
-UPDATE Thursday November 21 2024
-I have considered removing the lengthy personal talk included in the files for chapter
-2 and chapter 3 but have decided against it because I think they will serve to motivate
-me and be a testament of my journey and my growth. 
-The new added parts will show my overall growth and better understanding of the scheme
-and recursion as a whole.
+Exercises from  *The Little Schemer* by Daniel P. Friedman and Matthias Felleisen, 
+on introduction to functional programming and recursion
+
+## **Updates**
+
+### **Thursday, November 21, 2024**
+I added more functions from chapter 3 cons the Magnificent exercises.
+
