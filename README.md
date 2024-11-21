@@ -1,6 +1,6 @@
 # Computer Science Fundamentals Repository
 
-This repository documents my self-directed journey into computer science, focusing on key areas like computation, compilers, and system design. By working through exercises from foundational texts, I aim to build a solid understanding of these concepts and apply them to real-world challenges.
+This repository documents my self-directed journey into computer science, focusing on key areas like computation, compilers, and system design. By working through exercises from the following books, I aim to build a solid understanding of these concepts and apply them to real-world challenges.
 
 ## I aim to study these areas with the given materials
 
